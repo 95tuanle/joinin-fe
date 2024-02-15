@@ -1,6 +1,9 @@
 import { handleSignOut } from '@/app/lib/actions';
+import { auth } from '@/auth';
 
-export default function Page() {
+export default async function Page() {
+  const session = await auth();
+  console.log('session', session);
   return (
     <>
       <div>Home</div>

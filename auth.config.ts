@@ -1,5 +1,8 @@
-import type { NextAuthConfig } from 'next-auth';
+import type { NextAuthConfig, User } from 'next-auth';
 
+interface ExtendedUser extends User {
+  access_token?: string;
+}
 export const authConfig = {
   pages: {
     signIn: '/sign-in',
@@ -16,5 +19,5 @@ export const authConfig = {
       return true;
     },
   },
-  providers: [], // Add providers with an empty array for now
+  providers: [],
 } satisfies NextAuthConfig;
