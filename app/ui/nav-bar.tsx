@@ -8,7 +8,6 @@ const links = [{name: 'Home', href: '/'}, {name: 'Sign in', href: '/sign-in'}, {
 
 export default function NavBar() {
   const pathname = usePathname();
-
   return <div className="flex h-full flex-col px-4 py-4">
     <div className="flex grow flex-row justify-between space-x-2 text-black">
       {links.map(({href, name}) => <Link
@@ -21,5 +20,5 @@ export default function NavBar() {
         <p>{name}</p>
       </Link>)}
     </div>
-  </div>
+  </div>;
 }
