@@ -1,10 +1,10 @@
-'use client'
+'use client';
 
-import { authenticate } from '@/app/lib/actions'
-import { useFormState, useFormStatus } from 'react-dom'
+import { authenticate } from '@/app/lib/actions';
+import { useFormState, useFormStatus } from 'react-dom';
 
 export default function Page() {
-  const [errorMessage, dispatch] = useFormState(authenticate, undefined)
+  const [errorMessage, dispatch] = useFormState(authenticate, undefined);
 
   return (
     <form action={dispatch}>
@@ -34,14 +34,14 @@ export default function Page() {
       <div>{errorMessage && <p>{errorMessage}</p>}</div>
       <LoginButton />
     </form>
-  )
+  );
 }
 
 function LoginButton() {
-  const { pending } = useFormStatus()
+  const { pending } = useFormStatus();
   return (
     <button aria-disabled={pending} type="submit">
       Sign in
     </button>
-  )
+  );
 }

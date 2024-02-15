@@ -1,7 +1,7 @@
-import NextAuth, { User } from 'next-auth'
-import { authConfig } from './auth.config'
-import Credentials from 'next-auth/providers/credentials'
-import { z } from 'zod'
+import NextAuth, { User } from 'next-auth';
+import { authConfig } from './auth.config';
+import Credentials from 'next-auth/providers/credentials';
+import { z } from 'zod';
 
 export const { auth, signIn, signOut } = NextAuth({
   ...authConfig,
@@ -13,24 +13,24 @@ export const { auth, signIn, signOut } = NextAuth({
             email: z.string().email(),
             password: z.string().min(8),
           })
-          .safeParse(credentials)
+          .safeParse(credentials);
         if (parsedCredentials.success) {
-          const { email, password } = parsedCredentials.data
-          const token = await signInAndGetToken(email, password)
-          console.log('token:', token)
-          if (!token) return null
-          return token
+          const { email, password } = parsedCredentials.data;
+          const token = await signInAndGetToken(email, password);
+          console.log('token:', token);
+          if (!token) return null;
+          return token;
         }
-        console.log('Invalid credentials')
-        return null
+        console.log('Invalid credentials');
+        return null;
       },
     }),
   ],
-})
+});
 
 async function signInAndGetToken(
   email: string,
-  password: string
+  password: string,
 ): Promise<User | undefined> {
   try {
     const authResponse = await fetch(
@@ -39,12 +39,12 @@ async function signInAndGetToken(
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email, password: password }),
-      }
-    )
-    if (!authResponse.ok) return undefined
-    return await authResponse.json()
+      },
+    );
+    if (!authResponse.ok) return undefined;
+    return await authResponse.json();
   } catch (error) {
-    console.error('Failed to fetch user:', error)
-    throw new Error('Failed to fetch user.')
+    console.error('Failed to fetch user:', error);
+    throw new Error('Failed to fetch user.');
   }
 }

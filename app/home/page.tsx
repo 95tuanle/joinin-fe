@@ -1,4 +1,4 @@
-import { handleSignOut } from '@/app/lib/actions'
+import { handleSignOut } from '@/app/lib/actions';
 
 export default function Page() {
   return (
@@ -10,5 +10,5 @@ export default function Page() {
         </button>
       </form>
     </>
-  )
+  );
 }
