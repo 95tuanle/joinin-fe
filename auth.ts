@@ -1,8 +1,7 @@
-import NextAuth from 'next-auth';
-import Credentials from "next-auth/providers/credentials"
+import NextAuth, {User} from 'next-auth';
+import {authConfig} from './auth.config';
+import Credentials from 'next-auth/providers/credentials';
 import {z} from "zod";
-import {authConfig} from "@/auth.config";
-
 
 export const {auth, signIn, signOut} = NextAuth({
   ...authConfig, providers: [Credentials({
@@ -13,26 +12,27 @@ export const {auth, signIn, signOut} = NextAuth({
       if (parsedCredentials.success) {
         const {email, password} = parsedCredentials.data;
         const token = await signInAndGetToken(email, password);
+        console.log('token:', token);
         if (!token) return null;
         return token;
       }
       console.log('Invalid credentials');
       return null;
     }
-  })],
+  })]
 });
 
-async function signInAndGetToken(email: string, password: string): Promise<|null> {
+async function signInAndGetToken(email: string, password: string): Promise<User | undefined> {
   try {
     const authResponse = await fetch(`${process.env.JOININ_BE_API_URL}/auth/sign-in`, {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({email: email, password: password})
     })
-    if (!authResponse.ok) return null
+    if (!authResponse.ok) return undefined
     return await authResponse.json()
   } catch (error) {
-    console.error('Fail to sign in:', error);
-    throw new Error('Failed to sign in.');
+    console.error('Failed to fetch user:', error);
+    throw new Error('Failed to fetch user.');
   }
 }
