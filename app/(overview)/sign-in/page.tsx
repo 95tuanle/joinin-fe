@@ -4,8 +4,7 @@ import { authenticate } from '@/app/lib/actions';
 import { useFormState, useFormStatus } from 'react-dom';
 
 export default function Page() {
-  const [errorMessage, dispatch] = useFormState(authenticate, undefined);
-
+  const [state, dispatch] = useFormState(authenticate, undefined);
   return (
     <main className="flex items-center justify-center">
       <div className="relative mx-auto flex w-full max-w-[400px] flex-col space-y-2.5 p-4">
@@ -28,8 +27,18 @@ export default function Page() {
                     name="email"
                     placeholder="Enter your email address"
                     required
+                    aria-describedby="email-error"
                   />
                 </div>
+              </div>
+              <div id="email-error" aria-live="polite" aria-atomic="true">
+                {typeof state === 'object' &&
+                  state?.errors?.email &&
+                  state?.errors.email.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
               </div>
               <div>
                 <label
@@ -47,8 +56,18 @@ export default function Page() {
                     placeholder="Enter password"
                     required
                     minLength={8}
+                    aria-describedby="password-error"
                   />
                 </div>
+              </div>
+              <div id="email-error" aria-live="polite" aria-atomic="true">
+                {typeof state === 'object' &&
+                  state?.errors?.password &&
+                  state?.errors.password.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
               </div>
             </div>
             <LoginButton />
@@ -57,10 +76,8 @@ export default function Page() {
               aria-live="polite"
               aria-atomic="true"
             >
-              {errorMessage && (
-                <>
-                  <p className="text-sm text-red-500">{errorMessage}</p>
-                </>
+              {typeof state !== 'object' && (
+                <p className="text-sm text-red-500">{state}</p>
               )}
             </div>
           </div>
