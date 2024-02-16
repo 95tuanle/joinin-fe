@@ -1,8 +1,5 @@
-import type { NextAuthConfig, User } from 'next-auth';
+import type { NextAuthConfig } from 'next-auth';
 
-interface ExtendedUser extends User {
-  access_token?: string;
-}
 export const authConfig = {
   pages: {
     signIn: '/sign-in',
