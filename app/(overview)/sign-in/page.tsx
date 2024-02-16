@@ -10,7 +10,7 @@ export default function Page() {
       <div className="relative mx-auto flex w-full max-w-[400px] flex-col space-y-2.5 p-4">
         <form action={dispatch} className="space-y-3">
           <div className="text-black flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
-            <h1 className="mb-3 text-2xl">Please log in to continue.</h1>
+            <h1 className="mb-3 text-2xl">Please sign in to continue.</h1>
             <div className="w-full">
               <div>
                 <label
@@ -70,7 +70,7 @@ export default function Page() {
                   ))}
               </div>
             </div>
-            <LoginButton />
+            <SignInButton />
             <div
               className="flex h-8 items-end space-x-1"
               aria-live="polite"
@@ -87,7 +87,7 @@ export default function Page() {
   );
 }
 
-function LoginButton() {
+function SignInButton() {
   const { pending } = useFormStatus();
   return (
     <button

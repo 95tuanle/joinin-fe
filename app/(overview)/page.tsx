@@ -1,3 +1,11 @@
+import Image from 'next/image';
+
 export default function Home() {
-  return <div>JoinIn: A new way to connect with people and join events.</div>;
+  return (
+    <div className="flex items-center justify-center h-screen">
+      <div className="rounded-lg overflow-hidden">
+        <Image src="/logo.png" alt="Logo" width={200} height={200} />
+      </div>
+    </div>
+  );
 }

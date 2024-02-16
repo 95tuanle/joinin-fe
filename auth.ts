@@ -61,7 +61,7 @@ export async function signInAndGetToken(
     const { access_token } = await signInResponse.json();
     return access_token;
   } catch (error) {
-    console.error('Failed to sign user in:', error);
-    throw new Error('Failed to sign user in.');
+    console.error('Failed to sign in:', error);
+    throw new Error('Failed to sign in.');
   }
 }
