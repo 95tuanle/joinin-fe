@@ -11,7 +11,7 @@ type Event = {
   eventEndDate: Date;
 };
 
-export async function getAllEvent() {
+async function getAllEvent() {
   const session = (await auth()) as CustomSession;
   const res = await fetch(`${process.env.JOININ_BE_API_URL}/event`, {
     method: 'GET',
