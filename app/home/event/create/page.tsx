@@ -1,3 +1,9 @@
+import CreateEventForm from '@/components/CreateEventForm';
+
 export default function Page() {
-  return <p>The is create</p>;
+  return (
+    <div>
+      <CreateEventForm />
+    </div>
+  );
 }
