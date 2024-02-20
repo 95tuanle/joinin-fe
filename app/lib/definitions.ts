@@ -54,6 +54,20 @@ export type UserSignInState =
   | string
   | undefined;
 
+export type CreateEventState =
+  | {
+      errors?: {
+        title?: string[];
+        description?: string[];
+        location?: string[];
+        startAt?: string[];
+        endAt?: string[];
+      };
+      message?: string;
+    }
+  | string
+  | undefined;
+
 export interface User {
   _id: string;
   email: string;

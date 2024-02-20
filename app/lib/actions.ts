@@ -5,6 +5,7 @@ import { AuthError } from 'next-auth';
 import { z } from 'zod';
 import { redirect } from 'next/navigation';
 import {
+  CreateEventState,
   CustomSession,
   UserSignInState,
   UserSignUpState,
@@ -31,7 +32,7 @@ export async function authenticate(
     };
   }
   try {
-    await signIn('credentials', formData);
+    await signIn('credentials', parsedFormData.data);
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
@@ -79,10 +80,10 @@ export async function signUp(
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          firstName: formData.get('firstName'),
-          lastName: formData.get('lastName'),
-          email: formData.get('email'),
-          password: formData.get('password'),
+          firstName: parsedFormData.data.firstName,
+          lastName: parsedFormData.data.lastName,
+          email: parsedFormData.data.email,
+          password: parsedFormData.data.password,
         }),
       },
     );
@@ -127,4 +128,72 @@ export async function handleLeaveEvent(_id: string) {
     return { message: 'Failed to leave event.' };
   }
   revalidatePath('/home/joined-events');
+}
+
+const CreateEventSchema = z
+  .object({
+    title: z.string().min(2),
+    description: z.string().min(2),
+    location: z.string().min(2),
+    startAt: z
+      .string()
+      .transform((value) => new Date(value).getTime())
+      .refine((value) => value > Date.now(), {
+        message: 'Start date must be in the future',
+      }),
+    endAt: z.string().transform((value) => new Date(value).getTime()),
+  })
+  .refine((data) => data.startAt < data.endAt, {
+    message: 'End date must be after start date',
+    path: ['endAt'],
+  });
+
+export async function createEvent(
+  createEventState: CreateEventState,
+  formData: FormData,
+) {
+  const parsedFormData = CreateEventSchema.safeParse({
+    title: formData.get('title'),
+    description: formData.get('description'),
+    location: formData.get('location'),
+    startAt: formData.get('startAt'),
+    endAt: formData.get('endAt'),
+  });
+  if (!parsedFormData.success) {
+    return {
+      errors: parsedFormData.error.flatten().fieldErrors,
+      message: 'Invalid event details.',
+    };
+  }
+  const session = (await auth()) as CustomSession;
+  try {
+    const createEventResponse = await fetch(
+      `${process.env.JOININ_BE_API_URL}/event`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({
+          title: parsedFormData.data.title,
+          description: parsedFormData.data.description,
+          location: parsedFormData.data.location,
+          startAt: parsedFormData.data.startAt,
+          endAt: parsedFormData.data.endAt,
+        }),
+      },
+    );
+    if (!createEventResponse.ok) {
+      console.error(
+        'Failed to create event:',
+        await createEventResponse.json(),
+      );
+      return { message: 'Failed to create event.' };
+    }
+  } catch (error) {
+    console.error('Failed to create event:', error);
+    return { message: 'Failed to create event.' };
+  }
+  redirect('/home');
 }
