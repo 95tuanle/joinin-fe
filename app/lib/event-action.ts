@@ -119,17 +119,18 @@ export async function createEvent(formData: FormData) {
     console.log('formData', formData);
 
     const parsedData = CreateEventSchema.safeParse({
-      name: formData.get('title'),
+      title: formData.get('title'),
       description: formData.get('description'),
-      venue: formData.get('location'),
-      startDate: formData.get('startAt'),
-      endDate: formData.get('endAt'),
+      location: formData.get('location'),
+      startAt: formData.get('startAt'),
+      endAt: formData.get('endAt'),
     });
 
     if (!parsedData.success) {
       console.dir(parsedData.error.format());
     }
     console.dir(formData);
+    const startAt = new Date();
     const res = await fetch(`${process.env.JOININ_BE_API_URL}/event`, {
       method: 'POST',
       headers: {
