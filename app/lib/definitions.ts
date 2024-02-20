@@ -23,12 +23,12 @@ export type CustomSession = Session & {
 };
 
 export type Event = {
-  _id: String;
-  title: String;
-  description: String;
-  location: String;
-  startAt: Date;
-  endAt: Date;
-  organizer: String;
-  participants: Array<String>;
+  _id: string;
+  title: string;
+  description: string;
+  location: string;
+  startAt: number;
+  endAt: number;
+  organizer: string;
+  participants: Array<string>;
 };
