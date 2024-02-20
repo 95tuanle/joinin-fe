@@ -21,3 +21,14 @@ export type CustomSession = Session & {
   exp?: number;
   jti?: string;
 };
+
+export type Event = {
+  _id: String;
+  title: String;
+  description: String;
+  location: String;
+  startAt: Date;
+  endAt: Date;
+  organizer: String;
+  participants: Array<String>;
+};
