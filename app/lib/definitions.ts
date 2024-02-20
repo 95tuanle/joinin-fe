@@ -22,6 +22,16 @@ export type CustomSession = Session & {
   jti?: string;
 };
 
+type LinkProps = {
+  name: string;
+  href: string;
+};
+
+export type NavBarProps = {
+  links: LinkProps[];
+  isSignedIn: boolean;
+};
+
 export type Event = {
   _id: String;
   title: String;
