@@ -18,3 +18,20 @@ export async function fetchUpcomingEvents() {
     throw new Error('Failed to fetch upcoming events.');
   }
 }
+
+export async function fetchJoinedEvents() {
+  noStore();
+  try {
+    const session = (await auth()) as CustomSession;
+    const response = await fetch(
+      `${process.env.JOININ_BE_API_URL}/events/joined`,
+      {
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      },
+    );
+    return await response.json();
+  } catch (error) {
+    console.error('Fail to fetch joined events:', error);
+    throw new Error('Failed to fetch joined events.');
+  }
+}

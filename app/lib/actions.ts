@@ -112,3 +112,19 @@ export async function handleJoinEvent(_id: string) {
   }
   revalidatePath('/home');
 }
+
+export async function handleLeaveEvent(_id: string) {
+  const session = (await auth()) as CustomSession;
+  const leaveEventResponse = await fetch(
+    `${process.env.JOININ_BE_API_URL}/event/leave/${_id}`,
+    {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${session.access_token}` },
+    },
+  );
+  if (!leaveEventResponse.ok) {
+    console.error('Failed to leave event:', await leaveEventResponse.json());
+    return { message: 'Failed to leave event.' };
+  }
+  revalidatePath('/home/joined-events');
+}

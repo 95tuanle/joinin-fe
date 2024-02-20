@@ -12,7 +12,7 @@ const links = [
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <NavBar links={links} isSignedIn={false} />
+      <NavBar links={links} />
       {children}
     </>
   );
