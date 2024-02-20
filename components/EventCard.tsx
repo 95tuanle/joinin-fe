@@ -32,31 +32,31 @@ export default async function EventCard({ event }: IProps) {
   return (
     <div
       key={event._id}
-      className="max-w-sm p-6 bg-white border rounded-lg shadow bg-gray-800 border-gray-700"
+      className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
     >
       <a href="#">
-        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 text-white">
+        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
           {event.title}
         </h5>
       </a>
-      <p className="mb-3 font-normal text-gray-700 text-gray-400">
+      <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
         {event.description}
       </p>
-      <p className="mb-3 font-normal text-gray-700 text-gray-400">
+      <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
         {event.location}
       </p>
       <div className="flex flex-row items-center space-x-2">
         <CiCalendar />
         <p>Start At</p>
       </div>
-      <p className="mb-3 font-normal text-gray-700 text-gray-400">
+      <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
         {startAtLocalDateTime}
       </p>
       <div className="flex flex-row items-center space-x-2">
         <CiCalendar />
         <p>End At</p>
       </div>
-      <p className="mb-3 font-normal text-gray-700 text-gray-400">
+      <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
         {endAtLocalDateTime}
       </p>
       <div className="flex flex-col space-y-2.5">

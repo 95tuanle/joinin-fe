@@ -1,15 +1,30 @@
+'use client';
+
 import { updateEvent } from '@/app/lib/event-action';
-import { getEventDetail } from '@/app/lib/event-action';
-import { Event } from '@/app/lib/definitions';
 import Link from 'next/link';
-import ActionButton from './ActionButton';
+import { useState } from 'react';
+import ActionButton from '@/components/ActionButton';
 
 interface IProps {
-  eventId: string;
+  id: string;
+  title: string;
+  description: string;
+  location: string;
+  startAt: number;
+  endAt: number;
 }
 
-export default async function UpdateEventForm({ eventId }: IProps) {
-  const event: Event = await getEventDetail(eventId);
+export default function UpdateEventForm(props: IProps) {
+  //const event: Event = await getEventDetail(eventId);
+  const [title, setTitle] = useState(props.title);
+  const [description, setDescripion] = useState(props.description);
+  const [location, setLocation] = useState(props.description);
+  const [startAt, setStartAt] = useState(
+    new Date(props.startAt).toISOString().slice(0, -1),
+  );
+  const [endAt, setEndAt] = useState(
+    new Date(props.startAt).toISOString().slice(0, -1),
+  );
 
   return (
     <div>
@@ -19,7 +34,7 @@ export default async function UpdateEventForm({ eventId }: IProps) {
             required
             type="text"
             name="id"
-            value={event._id}
+            value={props.id}
             className="hidden"
           />
           <label className="block mb-2 text-sm font-medium text-white">
@@ -29,7 +44,8 @@ export default async function UpdateEventForm({ eventId }: IProps) {
             required
             type="text"
             name="title"
-            value={event.title}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             className="block w-full p-4 border rounded-lg text-base bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
@@ -40,7 +56,8 @@ export default async function UpdateEventForm({ eventId }: IProps) {
           <textarea
             required
             name="description"
-            value={event.description}
+            value={description}
+            onChange={(e) => setDescripion(e.target.value)}
             className="block w-full p-4 border rounded-lg text-base bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
@@ -52,7 +69,8 @@ export default async function UpdateEventForm({ eventId }: IProps) {
             required
             type="text"
             name="location"
-            value={event.location}
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
             className="block w-full p-4 border rounded-lg text-base bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
@@ -64,6 +82,11 @@ export default async function UpdateEventForm({ eventId }: IProps) {
             required
             type="datetime-local"
             name="startAt"
+            value={startAt}
+            min={new Date().toISOString().slice(0, -1)}
+            onChange={(e) =>
+              setStartAt(new Date(e.target.value).toISOString().slice(0, -1))
+            }
             className="block w-full p-4 border rounded-lg text-base bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
@@ -75,6 +98,11 @@ export default async function UpdateEventForm({ eventId }: IProps) {
             required
             type="datetime-local"
             name="endAt"
+            value={endAt}
+            min={startAt}
+            onChange={(e) =>
+              setEndAt(new Date(e.target.value).toISOString().slice(0, -1))
+            }
             className="block w-full p-4 border rounded-lg text-base bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
@@ -88,7 +116,7 @@ export default async function UpdateEventForm({ eventId }: IProps) {
         </div>
       </form>
       <div className="flex flex-col space-y-2.5 mt-4">
-        <ActionButton actionType="DELETE" eventId={event._id} />
+        <ActionButton actionType="DELETE" eventId={props.id} />
         <Link
           href={'/home/event/'}
           className="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center bg-gray-600 hover:bg-gray-700 focus:ring-gray-800"

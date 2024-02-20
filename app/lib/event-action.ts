@@ -10,8 +10,8 @@ const CreateEventSchema = z.object({
   title: z.string(),
   description: z.string(),
   location: z.string(),
-  startAt: z.string().transform((str) => new Date(str).getUTCMilliseconds),
-  endAt: z.string().transform((str) => new Date(str).getUTCMilliseconds),
+  startAt: z.string().transform((str) => +new Date(str)),
+  endAt: z.string().transform((str) => +new Date(str)),
 });
 
 const UpdateEventDtoEventSchema = z.object({
