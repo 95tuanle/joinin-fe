@@ -1,13 +1,16 @@
 import { updateEvent } from '@/app/lib/event-action';
+import { getEventDetail } from '@/app/lib/event-action';
 import { Event } from '@/app/lib/definitions';
 import Link from 'next/link';
 import ActionButton from './ActionButton';
 
 interface IProps {
-  event: Event;
+  eventId: string;
 }
 
-export default function UpdateEventForm({ event }: IProps) {
+export default async function UpdateEventForm({ eventId }: IProps) {
+  const event: Event = await getEventDetail(eventId);
+
   return (
     <div>
       <form action={updateEvent} className="max-w-sm mx-auto">
@@ -84,13 +87,15 @@ export default function UpdateEventForm({ event }: IProps) {
           </button>
         </div>
       </form>
-      <ActionButton actionType="DELETE" eventId={event._id} />
-      <Link
-        href={'/home/event/'}
-        className="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center bg-gray-600 hover:bg-gray-700 focus:ring-gray-800"
-      >
-        <button type="button">Back</button>
-      </Link>
+      <div className="flex flex-col space-y-2.5 mt-4">
+        <ActionButton actionType="DELETE" eventId={event._id} />
+        <Link
+          href={'/home/event/'}
+          className="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center bg-gray-600 hover:bg-gray-700 focus:ring-gray-800"
+        >
+          <button type="button">Back</button>
+        </Link>
+      </div>
     </div>
   );
 }

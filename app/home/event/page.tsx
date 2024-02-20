@@ -52,7 +52,7 @@ export default async function Page() {
       //     </div>
       //   </div>
       // </div>
-      <EventCard event={event} />
+      <EventCard key={event._id} event={event} />
     ));
   }
 
