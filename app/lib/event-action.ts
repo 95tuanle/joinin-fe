@@ -87,8 +87,7 @@ export async function deleteEvent(eventId: String) {
     return { message: 'Failed to fetch all event' };
   }
   console.log('delete scessfully');
-  revalidatePath('/home/event');
-  return;
+  redirect('/home/event');
 }
 
 export async function joinEvent(eventId: String) {
@@ -101,11 +100,13 @@ export async function joinEvent(eventId: String) {
   }
 
   const res = await fetch(
-    `${process.env.JOININ_BE_API_URL}/event/${eventId}/join`,
+    `${process.env.JOININ_BE_API_URL}/event/joinin/${eventId}`,
     {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({}),
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
     },
   );
 
@@ -113,8 +114,8 @@ export async function joinEvent(eventId: String) {
     console.error('Failed to join event:', await res.json());
     return { message: 'Failed to Join' };
   }
-
   console.log('Join scessfully');
+  revalidatePath('/home/event');
   return;
 }
 
@@ -128,11 +129,13 @@ export async function quitEvent(eventId: String) {
   }
 
   const res = await fetch(
-    `${process.env.JOININ_BE_API_URL}/event/${eventId}/quit`,
+    `${process.env.JOININ_BE_API_URL}/event/quit/${eventId}`,
     {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({}),
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
     },
   );
 
@@ -141,7 +144,7 @@ export async function quitEvent(eventId: String) {
     return { message: 'Failed to Join' };
   }
 
-  console.log('Join scessfully');
+  revalidatePath('/home/event');
   return;
 }
 

@@ -2,6 +2,7 @@ import { Event } from '@/app/lib/definitions';
 import ActionButton from '@/components/ActionButton';
 import { CustomSession } from '@/app/lib/definitions';
 import { auth } from '@/auth';
+import { CiCalendar, CiLocationOn } from 'react-icons/ci';
 
 interface IProps {
   event: Event;
@@ -31,40 +32,52 @@ export default async function EventCard({ event }: IProps) {
   return (
     <div
       key={event._id}
-      className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+      className="max-w-sm p-6 bg-white border rounded-lg shadow bg-gray-800 border-gray-700"
     >
       <a href="#">
-        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 text-white">
           {event.title}
         </h5>
       </a>
-      <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+      <p className="mb-3 font-normal text-gray-700 text-gray-400">
         {event.description}
       </p>
-      <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+      <p className="mb-3 font-normal text-gray-700 text-gray-400">
         {event.location}
       </p>
-      <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+      <div className="flex flex-row items-center space-x-2">
+        <CiCalendar />
+        <p>Start At</p>
+      </div>
+      <p className="mb-3 font-normal text-gray-700 text-gray-400">
         {startAtLocalDateTime}
       </p>
-      <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+      <div className="flex flex-row items-center space-x-2">
+        <CiCalendar />
+        <p>End At</p>
+      </div>
+      <p className="mb-3 font-normal text-gray-700 text-gray-400">
         {endAtLocalDateTime}
       </p>
       <div className="flex flex-col space-y-2.5">
-        {event.organizer === session._id ||
-        event.participants.includes(session._id || 'undefined') ? (
-          <button className="cursor-not-allowed opacity-50 items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg">
-            Joined
-          </button>
-        ) : (
-          <button className="items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
-            I&apos;m In!
-          </button>
-        )}
+        {Action(event, session)}
         {event.organizer === session._id && (
           <ActionButton eventId={event._id} actionType="EDIT" />
         )}
       </div>
     </div>
   );
+}
+
+function Action(event: Event, session: CustomSession) {
+  if (event.participants.includes(session._id || 'undefined')) {
+    return <ActionButton actionType={'QUIT'} eventId={event._id} />;
+  }
+
+  if (
+    !event.participants.includes(session._id || 'undefined') &&
+    event.organizer !== session._id
+  ) {
+    return <ActionButton actionType={'JOIN'} eventId={event._id} />;
+  }
 }

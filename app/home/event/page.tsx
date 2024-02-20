@@ -59,8 +59,11 @@ export default async function Page() {
   return (
     <main className="flex flex-col items-center justify-center space-y-10">
       {contents}
-      <Link href={'/home/event/create'} className="bg-green-600 min-h-14">
-        <button className="bg-green-600 min-h-14">Create My Event</button>
+      <Link
+        href={'/home/event/create'}
+        className="w-full items-center px-3 py-2 text-sm font-medium text-center text-white focus:ring-4 focus:outline-none bg-green-600 hover:bg-green-700 focus:ring-green-800"
+      >
+        <button>Create My Event</button>
       </Link>
     </main>
   );
