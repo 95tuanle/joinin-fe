@@ -3,6 +3,7 @@ import { fetchUpcomingEvents } from '@/app/lib/data';
 import { auth } from '@/auth';
 import { handleJoinEvent } from '@/app/lib/actions';
 import { didUserJoinEvent, formatDateToLocal } from '@/app/lib/utilities';
+import Link from 'next/link';
 
 export default async function Page() {
   try {
@@ -65,10 +66,13 @@ export default async function Page() {
                       <td className="whitespace-nowrap px-3 py-3">
                         {event.organizer.firstName}
                       </td>
-                      <td className="whitespace-nowrap px-3 py-3">
-                        {event.organizer._id !== currentUserId &&
-                        !didUserJoinEvent(event.participants, currentUserId) ? (
-                          <div className="flex justify-end gap-3">
+                      <td className="whitespace-nowrap py-3 pl-6 pr-3">
+                        <div className="flex justify-end gap-3">
+                          {event.organizer._id !== currentUserId &&
+                          !didUserJoinEvent(
+                            event.participants,
+                            currentUserId,
+                          ) ? (
                             <form
                               action={handleJoinEvent.bind(null, event._id)}
                             >
@@ -76,8 +80,14 @@ export default async function Page() {
                                 Join
                               </button>
                             </form>
-                          </div>
-                        ) : null}
+                          ) : null}
+                          <Link
+                            href={`/home/event-detail/${event._id}`}
+                            className="rounded-md border p-2 hover:bg-gray-100"
+                          >
+                            Detail
+                          </Link>
+                        </div>
                       </td>
                     </tr>
                   ))}

@@ -35,3 +35,20 @@ export async function fetchJoinedEvents() {
     throw new Error('Failed to fetch joined events.');
   }
 }
+
+export async function fetchEventById(eventId: string) {
+  noStore();
+  try {
+    const session = (await auth()) as CustomSession;
+    const response = await fetch(
+      `${process.env.JOININ_BE_API_URL}/event/get-by-id/${eventId}`,
+      {
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      },
+    );
+    return await response.json();
+  } catch (error) {
+    console.error('Fail to fetch event by id:', error);
+    throw new Error('Failed to fetch event by id.');
+  }
+}
