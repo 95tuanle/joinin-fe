@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { NavBarProps } from '@/app/lib/definitions';
 import { handleSignOut } from '@/app/lib/actions';
 
-export default function NavBar({ links, isSignedIn }: NavBarProps) {
+export default function NavBar({ links, firstName }: NavBarProps) {
   const pathname = usePathname();
   return (
     <div className="flex h-full flex-col px-4 py-4">
@@ -25,10 +25,10 @@ export default function NavBar({ links, isSignedIn }: NavBarProps) {
             {name}
           </Link>
         ))}
-        {isSignedIn ? (
+        {firstName ? (
           <form className="text-black" action={handleSignOut}>
             <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-gray-600">
-              Sign out
+              Sign out of {firstName}
             </button>
           </form>
         ) : null}

@@ -27,7 +27,7 @@ export interface NavBarProps {
     name: string;
     href: string;
   }[];
-  isSignedIn: boolean;
+  firstName?: string;
 }
 
 export type UserSignUpState =
