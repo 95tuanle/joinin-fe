@@ -3,14 +3,10 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
+import { NavBarProps } from '@/app/lib/definitions';
+import { handleSignOut } from '@/app/lib/actions';
 
-const links = [
-  { name: 'JoinIn', href: '/' },
-  { name: 'Sign in', href: '/sign-in' },
-  { name: 'Sign up', href: '/sign-up' },
-];
-
-export default function NavBar() {
+export default function NavBar({ links, isSignedIn }: NavBarProps) {
   const pathname = usePathname();
   return (
     <div className="flex h-full flex-col px-4 py-4">
@@ -26,9 +22,16 @@ export default function NavBar() {
               },
             )}
           >
-            <p>{name}</p>
+            {name}
           </Link>
         ))}
+        {isSignedIn ? (
+          <form className="text-black" action={handleSignOut}>
+            <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-gray-600">
+              Sign out
+            </button>
+          </form>
+        ) : null}
       </div>
     </div>
   );

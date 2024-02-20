@@ -1,10 +1,9 @@
 import { auth } from '@/auth';
 import { CiCalendar, CiLocationOn } from 'react-icons/ci';
-import { CustomSession } from '@/app/lib/definitions';
-import { getAllEvent, deleteEvent } from '@/app/lib/event-action';
+import { CustomSession, Event } from '@/app/lib/definitions';
+import { getAllEvent } from '@/app/lib/event-action';
 import ActionButton from '@/components/ActionButton';
 import Link from 'next/link';
-import { Event } from '@/app/lib/definitions';
 
 export default async function Page() {
   const session = (await auth()) as CustomSession;
