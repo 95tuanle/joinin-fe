@@ -6,23 +6,12 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
-type Event = {
-  _id: String;
-  eventName: String;
-  eventDesc: String;
-  eventVenue: String;
-  eventStartDate: Date;
-  eventEndDate: Date;
-  eventOwner: String;
-  eventparticipant: Array<String>;
-};
-
 const CreateEventSchema = z.object({
-  name: z.string(),
+  title: z.string(),
   description: z.string(),
-  venue: z.string(),
-  startDate: z.string().transform((str) => new Date(str).toISOString()),
-  endDate: z.string().transform((str) => new Date(str).toISOString()),
+  location: z.string(),
+  startAt: z.string().transform((str) => new Date(str).getUTCMilliseconds),
+  endAt: z.string().transform((str) => new Date(str).getUTCMilliseconds),
 });
 
 export async function getAllEvent() {
@@ -130,17 +119,17 @@ export async function createEvent(formData: FormData) {
     console.log('formData', formData);
 
     const parsedData = CreateEventSchema.safeParse({
-      name: formData.get('eventName'),
-      description: formData.get('eventDesc'),
-      venue: formData.get('eventVenue'),
-      startDate: formData.get('eventStartDate'),
-      endDate: formData.get('eventEndDate'),
+      name: formData.get('title'),
+      description: formData.get('description'),
+      venue: formData.get('location'),
+      startDate: formData.get('startAt'),
+      endDate: formData.get('endAt'),
     });
 
     if (!parsedData.success) {
       console.dir(parsedData.error.format());
     }
-
+    console.dir(formData);
     const res = await fetch(`${process.env.JOININ_BE_API_URL}/event`, {
       method: 'POST',
       headers: {
@@ -148,11 +137,11 @@ export async function createEvent(formData: FormData) {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        name: formData.get('eventName'),
-        description: formData.get('eventDesc'),
-        venue: formData.get('eventVenue'),
-        startDate: formData.get('eventStartDate'),
-        endDate: formData.get('eventEndDate'),
+        title: formData.get('title'),
+        description: formData.get('description'),
+        location: formData.get('location'),
+        startAt: formData.get('startAt'),
+        endAt: formData.get('endAt'),
       }),
     });
   } catch (error) {

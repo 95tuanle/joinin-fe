@@ -4,17 +4,7 @@ import { CustomSession } from '@/app/lib/definitions';
 import { getAllEvent, deleteEvent } from '@/app/lib/event-action';
 import ActionButton from '@/components/ActionButton';
 import Link from 'next/link';
-
-type Event = {
-  _id: String;
-  name: String;
-  description: String;
-  venue: String;
-  startDate: Date;
-  endDate: Date;
-  owner: String;
-  participants: Array<String>;
-};
+import { Event } from '@/app/lib/definitions';
 
 export default async function Page() {
   const session = (await auth()) as CustomSession;
@@ -31,7 +21,7 @@ export default async function Page() {
       >
         <div className="text-black flex-1 rounded-lg px6 pb-4 pt-8 text-white space-y-2.5">
           <div className="text-center">
-            <h1 className="text-4xl"> {event.name} </h1>
+            <h1 className="text-4xl"> {event.title} </h1>
           </div>
           <div className="p-6 space-y-2">
             <div className="m-4">
@@ -39,17 +29,17 @@ export default async function Page() {
             </div>
             <div className="flex flex-row items-center space-x-2">
               <CiLocationOn />
-              <p> {event.venue} </p>
+              <p> {event.location} </p>
             </div>
             <div className="flex flex-row items-center space-x-2">
               <CiCalendar />
               <p>
                 {' '}
-                {event.startDate.toString()} - {event.endDate.toString()}
+                {event.startAt.toString()} - {event.endAt.toString()}
               </p>
             </div>
             <div className="flex flex-col items-center">
-              {event.owner === session._id ||
+              {event.organizer === session._id ||
               event.participants.includes(session._id || 'undefined') ? (
                 <p>Joined!</p>
               ) : (
@@ -57,7 +47,7 @@ export default async function Page() {
                   I&apos;m In!
                 </button>
               )}
-              {event.owner === session._id && (
+              {event.organizer === session._id && (
                 <ActionButton eventId={event._id} actionType="DELETE" />
               )}
             </div>
