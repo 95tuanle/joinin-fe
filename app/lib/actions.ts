@@ -1,25 +1,20 @@
 'use server';
 
-import { signIn, signOut } from '@/auth';
+import { auth, signIn, signOut } from '@/auth';
 import { AuthError } from 'next-auth';
 import { z } from 'zod';
 import { redirect } from 'next/navigation';
+import {
+  CustomSession,
+  UserSignInState,
+  UserSignUpState,
+} from '@/app/lib/definitions';
+import { revalidatePath } from 'next/cache';
 
 const UserSignInSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
 });
-
-type UserSignInState =
-  | {
-      errors?: {
-        email?: string[];
-        password?: string[];
-      };
-      message?: string;
-    }
-  | string
-  | undefined;
 
 export async function authenticate(
   userSignInState: UserSignInState,
@@ -61,19 +56,6 @@ const UserSignUpSchema = z.object({
   password: z.string().min(8),
 });
 
-type UserSignUpState =
-  | {
-      errors?: {
-        firstName?: string[];
-        lastName?: string[];
-        email?: string[];
-        password?: string[];
-      };
-      message?: string;
-    }
-  | string
-  | undefined;
-
 export async function signUp(
   userSignUpState: UserSignUpState,
   formData: FormData,
@@ -113,4 +95,20 @@ export async function signUp(
     return { message: 'Failed to sign up.' };
   }
   redirect('/sign-in');
+}
+
+export async function handleJoinEvent(_id: string) {
+  const session = (await auth()) as CustomSession;
+  const joinEventResponse = await fetch(
+    `${process.env.JOININ_BE_API_URL}/event/join/${_id}`,
+    {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${session.access_token}` },
+    },
+  );
+  if (!joinEventResponse.ok) {
+    console.error('Failed to join event:', await joinEventResponse.json());
+    return { message: 'Failed to join event.' };
+  }
+  revalidatePath('/home');
 }

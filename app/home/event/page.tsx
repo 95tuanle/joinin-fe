@@ -1,13 +1,13 @@
 import { auth } from '@/auth';
 import { CiCalendar, CiLocationOn } from 'react-icons/ci';
-import { CustomSession, Event } from '@/app/lib/definitions';
+import { CustomSession, AntonyEvent } from '@/app/lib/definitions';
 import { getAllEvent } from '@/app/lib/event-action';
 import ActionButton from '@/components/ActionButton';
 import Link from 'next/link';
 
 export default async function Page() {
   const session = (await auth()) as CustomSession;
-  const events: Array<Event> | { message: string } = await getAllEvent();
+  const events: Array<AntonyEvent> | { message: string } = await getAllEvent();
   let contents;
   console.dir(events);
   if (typeof events === 'object' && 'message' in events) {
