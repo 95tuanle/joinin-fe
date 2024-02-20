@@ -1,6 +1,6 @@
 import { auth } from '@/auth';
 import { CiCalendar, CiLocationOn } from 'react-icons/ci';
-import { CustomSession, AntonyEvent } from '@/app/lib/definitions';
+import { AntonyEvent, CustomSession } from '@/app/lib/definitions';
 import { getAllEvent } from '@/app/lib/event-action';
 import ActionButton from '@/components/ActionButton';
 import Link from 'next/link';
