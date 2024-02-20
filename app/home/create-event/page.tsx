@@ -13,7 +13,7 @@ export default function Page() {
         <h1 className={`text-2xl`}>Create event</h1>
       </div>
       <form action={dispatch}>
-        <div className="text-black rounded-md bg-gray-50 p-4 md:p-6">
+        <div className="text-black rounded-md bg-gray-50 p-4">
           <div className="mb-4">
             <label htmlFor="title" className="mb-2 block text-sm font-medium">
               Choose a title

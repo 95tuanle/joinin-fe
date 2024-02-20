@@ -2,6 +2,7 @@ import { Event } from '@/app/lib/definitions';
 import { fetchJoinedEvents } from '@/app/lib/data';
 import { handleLeaveEvent } from '@/app/lib/actions';
 import { formatDateToLocal } from '@/app/lib/utilities';
+import Link from 'next/link';
 
 export default async function Page() {
   try {
@@ -62,13 +63,19 @@ export default async function Page() {
                       <td className="whitespace-nowrap px-3 py-3">
                         {event.organizer.firstName}
                       </td>
-                      <td className="whitespace-nowrap px-3 py-3">
+                      <td className="whitespace-nowrap py-3 pl-6 pr-3">
                         <div className="flex justify-end gap-3">
                           <form action={handleLeaveEvent.bind(null, event._id)}>
                             <button className="rounded-md border p-2 hover:bg-gray-100">
                               Leave
                             </button>
                           </form>
+                          <Link
+                            href={`/home/event-detail/${event._id}`}
+                            className="rounded-md border p-2 hover:bg-gray-100"
+                          >
+                            Detail
+                          </Link>
                         </div>
                       </td>
                     </tr>
