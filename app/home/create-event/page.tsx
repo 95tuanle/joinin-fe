@@ -9,24 +9,16 @@ export default function Page() {
   const [state, dispatch] = useFormState(createEvent, undefined);
 
   const [startAndEndDateErrors, setStartAndEndDateErrors] = useState({
-    startAtError: '',
-    endAtError: '',
+    startAt: '',
+    endAt: '',
   });
 
   function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name } = event.currentTarget;
-    if (name === 'startAt') {
-      setStartAndEndDateErrors((prev) => ({
-        ...prev,
-        startAtError: '',
-      }));
-    }
-    if (name === 'endAt') {
-      setStartAndEndDateErrors((prev) => ({
-        ...prev,
-        endAtError: '',
-      }));
-    }
+    setStartAndEndDateErrors((prev) => ({
+      ...prev,
+      [name]: '',
+    }));
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -34,42 +26,39 @@ export default function Page() {
     const formData = new FormData(event.currentTarget);
     const startAt = formData.get('startAt') as string;
     const endAt = formData.get('endAt') as string;
-    let isValid = true;
     if (startAt === '') {
       setStartAndEndDateErrors((prev) => ({
         ...prev,
-        startAtError: 'Start date is required',
+        startAt: 'Start date is required',
       }));
-      isValid = false;
+      return;
     }
     if (endAt === '') {
       setStartAndEndDateErrors((prev) => ({
         ...prev,
-        endAtError: 'End date is required',
+        endAt: 'End date is required',
       }));
-      isValid = false;
+      return;
     }
     const startAtUnix = Date.parse(startAt);
     if (isNaN(startAtUnix)) {
       setStartAndEndDateErrors((prev) => ({
         ...prev,
-        startAtError: 'Start date is invalid',
+        startAt: 'Start date is invalid',
       }));
-      isValid = false;
+      return;
     }
     const endAtUnix = Date.parse(endAt);
     if (isNaN(endAtUnix)) {
       setStartAndEndDateErrors((prev) => ({
         ...prev,
-        endAtError: 'End date is invalid',
+        endAt: 'End date is invalid',
       }));
-      isValid = false;
+      return;
     }
-    if (isValid) {
-      formData.set('startAt', startAtUnix.toString());
-      formData.set('endAt', endAtUnix.toString());
-      dispatch(formData);
-    }
+    formData.set('startAt', startAtUnix.toString());
+    formData.set('endAt', endAtUnix.toString());
+    dispatch(formData);
   }
 
   return (
@@ -190,9 +179,9 @@ export default function Page() {
                     {error}
                   </p>
                 ))}
-              {startAndEndDateErrors.startAtError !== '' && (
+              {startAndEndDateErrors.startAt !== '' && (
                 <p className="mt-2 text-sm text-red-500">
-                  {startAndEndDateErrors.startAtError}
+                  {startAndEndDateErrors.startAt}
                 </p>
               )}
             </div>
@@ -222,9 +211,9 @@ export default function Page() {
                     {error}
                   </p>
                 ))}
-              {startAndEndDateErrors.endAtError !== '' && (
+              {startAndEndDateErrors.endAt !== '' && (
                 <p className="mt-2 text-sm text-red-500">
-                  {startAndEndDateErrors.endAtError}
+                  {startAndEndDateErrors.endAt}
                 </p>
               )}
             </div>
