@@ -6,28 +6,20 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { z } from 'zod';
 
-const EventDateSchema = z
-  .object({
-    startAt: z
-      .string()
-      .transform((value) => Date.parse(value))
-      .refine((value) => !isNaN(value), {
-        message: 'Start date is invalid',
-      })
-      .refine((value) => value > Date.now(), {
-        message: 'Start date must be in the future',
-      }),
-    endAt: z
-      .string()
-      .transform((value) => Date.parse(value))
-      .refine((value) => !isNaN(value), {
-        message: 'End date is invalid',
-      }),
-  })
-  .refine((data) => data.startAt < data.endAt, {
-    message: 'End date must be after start date',
-    path: ['endAt'],
-  });
+const EventDateSchema = z.object({
+  startAt: z
+    .string()
+    .transform((value) => Date.parse(value))
+    .refine((value) => !isNaN(value), {
+      message: 'Start date is invalid',
+    }),
+  endAt: z
+    .string()
+    .transform((value) => Date.parse(value))
+    .refine((value) => !isNaN(value), {
+      message: 'End date is invalid',
+    }),
+});
 
 export default function Page() {
   const [state, dispatch] = useFormState(createEvent, undefined);
