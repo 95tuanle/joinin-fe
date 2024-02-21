@@ -4,6 +4,30 @@ import { useFormState, useFormStatus } from 'react-dom';
 import { createEvent } from '@/app/lib/actions';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { z } from 'zod';
+
+const EventDateSchema = z
+  .object({
+    startAt: z
+      .string()
+      .transform((value) => Date.parse(value))
+      .refine((value) => !isNaN(value), {
+        message: 'Start date is invalid',
+      })
+      .refine((value) => value > Date.now(), {
+        message: 'Start date must be in the future',
+      }),
+    endAt: z
+      .string()
+      .transform((value) => Date.parse(value))
+      .refine((value) => !isNaN(value), {
+        message: 'End date is invalid',
+      }),
+  })
+  .refine((data) => data.startAt < data.endAt, {
+    message: 'End date must be after start date',
+    path: ['endAt'],
+  });
 
 export default function Page() {
   const [state, dispatch] = useFormState(createEvent, undefined);
@@ -26,38 +50,20 @@ export default function Page() {
     const formData = new FormData(event.currentTarget);
     const startAt = formData.get('startAt') as string;
     const endAt = formData.get('endAt') as string;
-    if (startAt === '') {
-      setStartAndEndDateErrors((prev) => ({
-        ...prev,
-        startAt: 'Start date is required',
-      }));
+    const parsedDates = EventDateSchema.safeParse({ startAt, endAt });
+    if (!parsedDates.success) {
+      setStartAndEndDateErrors({
+        startAt:
+          parsedDates.error.errors.find((e) => e.path[0] === 'startAt')
+            ?.message || '',
+        endAt:
+          parsedDates.error.errors.find((e) => e.path[0] === 'endAt')
+            ?.message || '',
+      });
       return;
     }
-    if (endAt === '') {
-      setStartAndEndDateErrors((prev) => ({
-        ...prev,
-        endAt: 'End date is required',
-      }));
-      return;
-    }
-    const startAtUnix = Date.parse(startAt);
-    if (isNaN(startAtUnix)) {
-      setStartAndEndDateErrors((prev) => ({
-        ...prev,
-        startAt: 'Start date is invalid',
-      }));
-      return;
-    }
-    const endAtUnix = Date.parse(endAt);
-    if (isNaN(endAtUnix)) {
-      setStartAndEndDateErrors((prev) => ({
-        ...prev,
-        endAt: 'End date is invalid',
-      }));
-      return;
-    }
-    formData.set('startAt', startAtUnix.toString());
-    formData.set('endAt', endAtUnix.toString());
+    formData.set('startAt', parsedDates.data.startAt.toString());
+    formData.set('endAt', parsedDates.data.endAt.toString());
     dispatch(formData);
   }
 
