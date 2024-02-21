@@ -137,7 +137,10 @@ const CreateEventSchema = z
     location: z.string().min(2),
     startAt: z
       .string()
-      .transform((value) => new Date(value).getTime())
+      .transform((value) => {
+        console.log(value, 'value raw');
+        return new Date(value).getTime();
+      })
       .refine(
         (value) => {
           console.log(value, 'value');
