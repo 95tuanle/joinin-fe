@@ -20,7 +20,7 @@ export default function AppBar() {
               className="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
               aria-hidden="true"
             />
-            <span className="sr-only">Home</span>
+            <span className="sr-only">Upcoming Event</span>
           </button>
         </Link>
         <div
@@ -40,7 +40,7 @@ export default function AppBar() {
               className="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
               aria-hidden="true"
             />
-            <span className="sr-only">Wallet</span>
+            <span className="sr-only">Joined Event</span>
           </button>
         </Link>
         <div
@@ -61,7 +61,7 @@ export default function AppBar() {
                 className="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
                 aria-hidden="true"
               />
-              <span className="sr-only">New item</span>
+              <span className="sr-only">New Event</span>
             </button>
           </Link>
         </div>
@@ -82,7 +82,7 @@ export default function AppBar() {
               className="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
               aria-hidden="true"
             />
-            <span className="sr-only">Settings</span>
+            <span className="sr-only">Manage</span>
           </button>
         </Link>
         <div
@@ -94,7 +94,7 @@ export default function AppBar() {
           <div className="tooltip-arrow" data-popper-arrow></div>
         </div>
         <Link
-          href={'/home/event/create'}
+          href={'/home/user'}
           className="inline-flex flex-col items-center justify-center px-5 rounded-e-full hover:bg-gray-50 dark:hover:bg-gray-800 group"
         >
           <button
