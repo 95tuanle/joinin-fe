@@ -3,16 +3,81 @@
 import { useFormState, useFormStatus } from 'react-dom';
 import { createEvent } from '@/app/lib/actions';
 import Link from 'next/link';
+import React, { useState } from 'react';
 
 export default function Page() {
   const [state, dispatch] = useFormState(createEvent, undefined);
+
+  const [startAndEndDateErrors, setStartAndEndDateErrors] = useState({
+    startAtError: '',
+    endAtError: '',
+  });
+
+  function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name } = event.currentTarget;
+    if (name === 'startAt') {
+      setStartAndEndDateErrors((prev) => ({
+        ...prev,
+        startAtError: '',
+      }));
+    }
+    if (name === 'endAt') {
+      setStartAndEndDateErrors((prev) => ({
+        ...prev,
+        endAtError: '',
+      }));
+    }
+  }
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const startAt = formData.get('startAt') as string;
+    const endAt = formData.get('endAt') as string;
+    let isValid = true;
+    if (startAt === '') {
+      setStartAndEndDateErrors((prev) => ({
+        ...prev,
+        startAtError: 'Start date is required',
+      }));
+      isValid = false;
+    }
+    if (endAt === '') {
+      setStartAndEndDateErrors((prev) => ({
+        ...prev,
+        endAtError: 'End date is required',
+      }));
+      isValid = false;
+    }
+    const startAtUnix = Date.parse(startAt);
+    if (isNaN(startAtUnix)) {
+      setStartAndEndDateErrors((prev) => ({
+        ...prev,
+        startAtError: 'Start date is invalid',
+      }));
+      isValid = false;
+    }
+    const endAtUnix = Date.parse(endAt);
+    if (isNaN(endAtUnix)) {
+      setStartAndEndDateErrors((prev) => ({
+        ...prev,
+        endAtError: 'End date is invalid',
+      }));
+      isValid = false;
+    }
+    if (isValid) {
+      formData.set('startAt', startAtUnix.toString());
+      formData.set('endAt', endAtUnix.toString());
+      dispatch(formData);
+    }
+  }
 
   return (
     <main>
       <div className="flex w-full items-center justify-between">
         <h1 className={`text-2xl`}>Create event</h1>
       </div>
-      <form action={dispatch}>
+      <form onSubmit={handleSubmit}>
         <div className="text-black rounded-md bg-gray-50 p-4">
           <div className="mb-4">
             <label htmlFor="title" className="mb-2 block text-sm font-medium">
@@ -114,6 +179,7 @@ export default function Page() {
                   type="datetime-local"
                   className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                   aria-describedby="startAt-error"
+                  onChange={handleOnChange}
                 />
               </div>
             </div>
@@ -124,6 +190,11 @@ export default function Page() {
                     {error}
                   </p>
                 ))}
+              {startAndEndDateErrors.startAtError !== '' && (
+                <p className="mt-2 text-sm text-red-500">
+                  {startAndEndDateErrors.startAtError}
+                </p>
+              )}
             </div>
           </div>
 
@@ -140,6 +211,7 @@ export default function Page() {
                   type="datetime-local"
                   className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                   aria-describedby="endAt-error"
+                  onChange={handleOnChange}
                 />
               </div>
             </div>
@@ -150,6 +222,11 @@ export default function Page() {
                     {error}
                   </p>
                 ))}
+              {startAndEndDateErrors.endAtError !== '' && (
+                <p className="mt-2 text-sm text-red-500">
+                  {startAndEndDateErrors.endAtError}
+                </p>
+              )}
             </div>
           </div>
 

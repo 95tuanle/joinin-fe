@@ -135,13 +135,10 @@ const CreateEventSchema = z
     title: z.string().min(2),
     description: z.string().min(2),
     location: z.string().min(2),
-    startAt: z
-      .string()
-      .transform((value) => new Date(value).getTime())
-      .refine((value) => value > Date.now(), {
-        message: 'Start date must be in the future',
-      }),
-    endAt: z.string().transform((value) => new Date(value).getTime()),
+    startAt: z.number().refine((value) => value > Date.now(), {
+      message: 'Start date must be in the future',
+    }),
+    endAt: z.number(),
   })
   .refine((data) => data.startAt < data.endAt, {
     message: 'End date must be after start date',
@@ -156,8 +153,8 @@ export async function createEvent(
     title: formData.get('title'),
     description: formData.get('description'),
     location: formData.get('location'),
-    startAt: formData.get('startAt'),
-    endAt: formData.get('endAt'),
+    startAt: Number(formData.get('startAt')),
+    endAt: Number(formData.get('endAt')),
   });
   if (!parsedFormData.success) {
     return {
