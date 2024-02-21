@@ -61,7 +61,7 @@ export default function CreateEventForm() {
           name="startAt"
           value={startDate}
           onChange={handleStartDateChange}
-          min={new Date().toISOString().split('T')[0]}
+          min={startDate}
           className="block w-full p-4 border rounded-lg text-base bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
         />
       </div>

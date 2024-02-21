@@ -44,6 +44,48 @@ export async function getAllEvent() {
   return res.json();
 }
 
+export async function getMyEvent() {
+  const session = (await auth()) as CustomSession;
+  const token = session.access_token;
+  if (!token) {
+    console.error('No token');
+    return;
+  }
+  const res = await fetch(`${process.env.JOININ_BE_API_URL}/event/my`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) {
+    console.error('Failed to fetch all event:', await res.json());
+    return { message: 'Failed to fetch all event' };
+  }
+  return res.json();
+}
+
+export async function getJoinedEvent() {
+  const session = (await auth()) as CustomSession;
+  const token = session.access_token;
+  if (!token) {
+    console.error('No token');
+    return;
+  }
+  const res = await fetch(`${process.env.JOININ_BE_API_URL}/event/joined`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) {
+    console.error('Failed to fetch joined event:', await res.json());
+    return { message: 'Failed to fetch joined event' };
+  }
+  return res.json();
+}
+
 export async function getEventDetail(eventId: string) {
   const session = (await auth()) as CustomSession;
   const token = session.access_token;
@@ -87,7 +129,7 @@ export async function deleteEvent(eventId: String) {
     return { message: 'Failed to fetch all event' };
   }
   console.log('delete scessfully');
-  redirect('/home/event');
+  redirect('/home/event/manage');
 }
 
 export async function joinEvent(eventId: String) {
@@ -115,7 +157,7 @@ export async function joinEvent(eventId: String) {
     return { message: 'Failed to Join' };
   }
   console.log('Join scessfully');
-  revalidatePath('/home/event');
+  revalidatePath('/home');
   return;
 }
 
@@ -144,7 +186,7 @@ export async function quitEvent(eventId: String) {
     return { message: 'Failed to Join' };
   }
 
-  revalidatePath('/home/event');
+  revalidatePath('/home');
   return;
 }
 
@@ -187,7 +229,7 @@ export async function createEvent(formData: FormData) {
     console.log(error);
     console.error('fail to create event');
   }
-  redirect('/home/event');
+  redirect('/home');
 }
 
 export async function updateEvent(formData: FormData) {
@@ -234,5 +276,5 @@ export async function updateEvent(formData: FormData) {
     console.log(error);
     console.error('fail to update event');
   }
-  redirect('/home/event');
+  redirect('/home');
 }

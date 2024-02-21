@@ -1,5 +1,6 @@
 import React from 'react';
 import NavBar from '@/app/ui/nav-bar';
+import AppBar from '@/components/AppBar';
 
 const links = [
   { name: 'Home', href: '/home' },
@@ -12,7 +13,8 @@ const links = [
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <NavBar links={links} isSignedIn={true} />
+      {/* <NavBar links={links} isSignedIn={true} /> */}
+      <AppBar />
       {children}
     </>
   );
