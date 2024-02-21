@@ -14,7 +14,7 @@ export default function Page() {
   });
 
   function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.currentTarget;
+    const { name } = event.currentTarget;
     if (name === 'startAt') {
       setStartAndEndDateErrors((prev) => ({
         ...prev,
