@@ -138,9 +138,16 @@ const CreateEventSchema = z
     startAt: z
       .string()
       .transform((value) => new Date(value).getTime())
-      .refine((value) => value > Date.now(), {
-        message: 'Start date must be in the future',
-      }),
+      .refine(
+        (value) => {
+          console.log(value, 'value');
+          console.log(Date.now(), 'Date.now()');
+          return value > Date.now();
+        },
+        {
+          message: 'Start date must be in the future',
+        },
+      ),
     endAt: z.string().transform((value) => new Date(value).getTime()),
   })
   .refine((data) => data.startAt < data.endAt, {
