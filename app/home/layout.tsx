@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import NavBar from '@/app/ui/nav-bar';
 import { auth } from '@/auth';
 import { CustomSession } from '@/app/lib/definitions';
@@ -21,7 +21,11 @@ export default async function Layout({
   return (
     <>
       <NavBar links={links} firstName={session.firstName} />
-      {children}
+      <Suspense fallback={<Loading />}>{children}</Suspense>
     </>
   );
+}
+
+function Loading() {
+  return <div>Loading...</div>;
 }
