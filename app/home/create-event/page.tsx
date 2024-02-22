@@ -60,11 +60,11 @@ export default function Page() {
   }
 
   return (
-    <main>
+    <div className="w-full">
       <div className="flex w-full items-center justify-between">
         <h1 className={`text-2xl`}>Create event</h1>
       </div>
-      <form onSubmit={handleSubmit}>
+      <form className="mt-6" onSubmit={handleSubmit}>
         <div className="text-black rounded-md bg-gray-50 p-4">
           <div className="mb-4">
             <label htmlFor="title" className="mb-2 block text-sm font-medium">
@@ -238,7 +238,7 @@ export default function Page() {
           <CreateEventButton />
         </div>
       </form>
-    </main>
+    </div>
   );
 }
 

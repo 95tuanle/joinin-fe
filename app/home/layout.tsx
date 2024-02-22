@@ -1,15 +1,15 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import NavBar from '@/app/ui/nav-bar';
 import { auth } from '@/auth';
 import { CustomSession } from '@/app/lib/definitions';
 
 const links = [
   { name: 'Home', href: '/home' },
-  { name: 'Create event', href: '/home/create-event' },
   {
     name: 'Joined events',
     href: '/home/joined-events',
   },
+  { name: 'Create event', href: '/home/create-event' },
 ];
 export default async function Layout({
   children,
@@ -21,11 +21,7 @@ export default async function Layout({
   return (
     <>
       <NavBar links={links} firstName={session.firstName} />
-      <Suspense fallback={<Loading />}>{children}</Suspense>
+      {children}
     </>
   );
-}
-
-function Loading() {
-  return <div>Loading...</div>;
 }
