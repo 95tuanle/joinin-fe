@@ -1,10 +1,10 @@
-import { CustomSession, Event } from '@/app/lib/definitions';
+import { AntonyEvent, CustomSession } from '@/app/lib/definitions';
 import ActionButton from '@/components/ActionButton';
 import { auth } from '@/auth';
 import { CiCalendar } from 'react-icons/ci';
 
 interface IProps {
-  event: Event;
+  event: AntonyEvent;
 }
 
 function unixTimestampToLocalDateTime(unixTimestamp: number) {
@@ -68,7 +68,7 @@ export default async function EventCard({ event }: IProps) {
   );
 }
 
-function Action(event: Event, session: CustomSession) {
+function Action(event: AntonyEvent, session: CustomSession) {
   if (event.participants.includes(session._id || 'undefined')) {
     return <ActionButton actionType={'QUIT'} eventId={event._id} />;
   }
