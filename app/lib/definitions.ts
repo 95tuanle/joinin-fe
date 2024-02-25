@@ -7,7 +7,7 @@ export type CustomSession = Session & {
   expires?: string;
   email?: string;
   sub?: string;
-  _id?: string;
+  _id: string;
   firstName?: string;
   lastName?: string;
   oauthProvider?: string;
@@ -22,23 +22,85 @@ export type CustomSession = Session & {
   jti?: string;
 };
 
-type LinkProps = {
-  name: string;
-  href: string;
-};
+export interface NavBarProps {
+  links: {
+    name: string;
+    href: string;
+  }[];
+  firstName?: string;
+}
 
-export type NavBarProps = {
-  links: LinkProps[];
-  isSignedIn: boolean;
-};
+export type UserSignUpState =
+  | {
+      errors?: {
+        firstName?: string[];
+        lastName?: string[];
+        email?: string[];
+        password?: string[];
+      };
+      message?: string;
+    }
+  | string
+  | undefined;
 
-export type Event = {
+export type UserSignInState =
+  | {
+      errors?: {
+        email?: string[];
+        password?: string[];
+      };
+      message?: string;
+    }
+  | string
+  | undefined;
+
+// export type Event = {
+export type CreateEventState =
+  | {
+      errors?: {
+        title?: string[];
+        description?: string[];
+        location?: string[];
+        startAt?: string[];
+        endAt?: string[];
+      };
+      message?: string;
+    }
+  | string
+  | undefined;
+
+export interface User {
+  _id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  __v: number;
+}
+
+export interface Event {
   _id: string;
   title: string;
   description: string;
   location: string;
   startAt: number;
   endAt: number;
-  organizer: string;
-  participants: Array<string>;
-};
+//   organizer: string;
+//   participants: Array<string>;
+// };
+  organizer: User;
+  isValid: boolean;
+  participants: Array<User>;
+  __v: number;
+}
+
+// Antony
+export interface AntonyEvent {
+  _id: String;
+  title: String;
+  description: String;
+  location: String;
+  startAt: Date;
+  endAt: Date;
+  organizer: String;
+  participants: Array<String>;
+}
