@@ -1,7 +1,7 @@
 'use client';
 
 import { createEvent } from '@/app/lib/event-action';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 export default function CreateEventForm() {
   const [startDate, setStartDate] = useState<string>(() =>

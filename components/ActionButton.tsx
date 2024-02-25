@@ -7,7 +7,7 @@ enum ActionType {
   DELETE = 'DELETE',
   JOIN = 'JOIN',
   QUIT = 'QUIT',
-  UPDATE = 'UPDATE',
+  // UPDATE = 'UPDATE',
   EDIT = 'EDIT',
 }
 
@@ -27,8 +27,6 @@ export default function ActionButton({ eventId, actionType }: IProps) {
           Delete
         </button>
       );
-      break;
-
     case ActionType.EDIT:
       return (
         <Link
@@ -38,8 +36,6 @@ export default function ActionButton({ eventId, actionType }: IProps) {
           <button>Edit</button>
         </Link>
       );
-      break;
-
     case ActionType.JOIN:
       return (
         <button
@@ -49,8 +45,6 @@ export default function ActionButton({ eventId, actionType }: IProps) {
           I&apos;m In!
         </button>
       );
-      break;
-
     case ActionType.QUIT:
       return (
         <button
@@ -60,10 +54,7 @@ export default function ActionButton({ eventId, actionType }: IProps) {
           Quit
         </button>
       );
-      break;
-
     default:
       throw Error('not select the action type');
-      break;
   }
 }

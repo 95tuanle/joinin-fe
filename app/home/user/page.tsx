@@ -13,7 +13,7 @@ export default async function Page() {
         </p>
       </div>
       <p>Email:{session.email}</p>
-      <p>Frist Name: {session.firstName}</p>
+      <p>First Name: {session.firstName}</p>
       <p>Last Name: {session.lastName}</p>
       <form className="text-black" action={handleSignOut}>
         <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-gray-600">

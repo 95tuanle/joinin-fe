@@ -17,7 +17,7 @@ interface IProps {
 export default function UpdateEventForm(props: IProps) {
   //const event: Event = await getEventDetail(eventId);
   const [title, setTitle] = useState(props.title);
-  const [description, setDescripion] = useState(props.description);
+  const [description, setDescription] = useState(props.description);
   const [location, setLocation] = useState(props.description);
   const [startAt, setStartAt] = useState(
     new Date(props.startAt).toISOString().slice(0, -1),
@@ -57,7 +57,7 @@ export default function UpdateEventForm(props: IProps) {
             required
             name="description"
             value={description}
-            onChange={(e) => setDescripion(e.target.value)}
+            onChange={(e) => setDescription(e.target.value)}
             className="block w-full p-4 border rounded-lg text-base bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           />
         </div>

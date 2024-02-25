@@ -128,7 +128,7 @@ export async function deleteEvent(eventId: String) {
     console.error('Failed to fetch all event:', await res.json());
     return { message: 'Failed to fetch all event' };
   }
-  console.log('delete scessfully');
+  console.log('delete successfully');
   redirect('/home/event/manage');
 }
 
@@ -156,7 +156,7 @@ export async function joinEvent(eventId: String) {
     console.error('Failed to join event:', await res.json());
     return { message: 'Failed to Join' };
   }
-  console.log('Join scessfully');
+  console.log('Join successfully');
   revalidatePath('/home');
   return;
 }
@@ -208,7 +208,7 @@ export async function createEvent(formData: FormData) {
       console.dir(parsedData.error.format());
     }
     console.dir(formData);
-    const res = await fetch(`${process.env.JOININ_BE_API_URL}/event`, {
+    return await fetch(`${process.env.JOININ_BE_API_URL}/event`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -251,7 +251,7 @@ export async function updateEvent(formData: FormData) {
     }
     console.dir(formData);
 
-    const res = await fetch(
+    return await fetch(
       `${process.env.JOININ_BE_API_URL}/event/${formData.get('id')}`,
       {
         method: 'PATCH',
