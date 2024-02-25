@@ -10,6 +10,15 @@ const CreateEventSchema = z.object({
   title: z.string(),
   description: z.string(),
   location: z.string(),
+  startAt: z.string().transform((str) => +new Date(str)),
+  endAt: z.string().transform((str) => +new Date(str)),
+});
+
+const UpdateEventDtoEventSchema = z.object({
+  //_Id: z.string(),
+  title: z.string(),
+  description: z.string(),
+  location: z.string(),
   startAt: z.string().transform((str) => new Date(str).getUTCMilliseconds),
   endAt: z.string().transform((str) => new Date(str).getUTCMilliseconds),
 });
@@ -35,6 +44,72 @@ export async function getAllEvent() {
   return res.json();
 }
 
+export async function getMyEvent() {
+  const session = (await auth()) as CustomSession;
+  const token = session.access_token;
+  if (!token) {
+    console.error('No token');
+    return;
+  }
+  const res = await fetch(`${process.env.JOININ_BE_API_URL}/event/my`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) {
+    console.error('Failed to fetch all event:', await res.json());
+    return { message: 'Failed to fetch all event' };
+  }
+  return res.json();
+}
+
+export async function getJoinedEvent() {
+  const session = (await auth()) as CustomSession;
+  const token = session.access_token;
+  if (!token) {
+    console.error('No token');
+    return;
+  }
+  const res = await fetch(`${process.env.JOININ_BE_API_URL}/event/joined`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) {
+    console.error('Failed to fetch joined event:', await res.json());
+    return { message: 'Failed to fetch joined event' };
+  }
+  return res.json();
+}
+
+export async function getEventDetail(eventId: string) {
+  const session = (await auth()) as CustomSession;
+  const token = session.access_token;
+  if (!token) {
+    console.error('No token');
+    return;
+  }
+  const res = await fetch(
+    `${process.env.JOININ_BE_API_URL}/event/get-by-id/${eventId}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+  if (!res.ok) {
+    console.error('Failed to fetch event:', await res.json());
+    return { message: 'Failed to fetch event' };
+  }
+  return res.json();
+}
+
 export async function deleteEvent(eventId: String) {
   const session = (await auth()) as CustomSession;
   const token = session.access_token;
@@ -53,9 +128,8 @@ export async function deleteEvent(eventId: String) {
     console.error('Failed to fetch all event:', await res.json());
     return { message: 'Failed to fetch all event' };
   }
-  console.log('delete scessfully');
-  revalidatePath('/home/event');
-  return;
+  console.log('delete successfully');
+  redirect('/home/event/manage');
 }
 
 export async function joinEvent(eventId: String) {
@@ -68,11 +142,13 @@ export async function joinEvent(eventId: String) {
   }
 
   const res = await fetch(
-    `${process.env.JOININ_BE_API_URL}/event/${eventId}/join`,
+    `${process.env.JOININ_BE_API_URL}/event/joinin/${eventId}`,
     {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({}),
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
     },
   );
 
@@ -80,8 +156,8 @@ export async function joinEvent(eventId: String) {
     console.error('Failed to join event:', await res.json());
     return { message: 'Failed to Join' };
   }
-
-  console.log('Join scessfully');
+  console.log('Join successfully');
+  revalidatePath('/home');
   return;
 }
 
@@ -95,11 +171,13 @@ export async function quitEvent(eventId: String) {
   }
 
   const res = await fetch(
-    `${process.env.JOININ_BE_API_URL}/event/${eventId}/quit`,
+    `${process.env.JOININ_BE_API_URL}/event/quit/${eventId}`,
     {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({}),
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
     },
   );
 
@@ -108,7 +186,7 @@ export async function quitEvent(eventId: String) {
     return { message: 'Failed to Join' };
   }
 
-  console.log('Join scessfully');
+  revalidatePath('/home');
   return;
 }
 
@@ -130,8 +208,7 @@ export async function createEvent(formData: FormData) {
       console.dir(parsedData.error.format());
     }
     console.dir(formData);
-    const startAt = new Date();
-    const res = await fetch(`${process.env.JOININ_BE_API_URL}/event`, {
+    return await fetch(`${process.env.JOININ_BE_API_URL}/event`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -152,5 +229,52 @@ export async function createEvent(formData: FormData) {
     console.log(error);
     console.error('fail to create event');
   }
-  redirect('/home/event');
+  redirect('/home');
+}
+
+export async function updateEvent(formData: FormData) {
+  try {
+    const session = (await auth()) as CustomSession;
+    const token = session.access_token;
+
+    const parsedData = UpdateEventDtoEventSchema.safeParse({
+      //_Id: formData.get('id'),
+      title: formData.get('title'),
+      description: formData.get('description'),
+      location: formData.get('location'),
+      startAt: formData.get('startAt'),
+      endAt: formData.get('endAt'),
+    });
+
+    if (!parsedData.success) {
+      console.dir(parsedData.error.format());
+    }
+    console.dir(formData);
+
+    return await fetch(
+      `${process.env.JOININ_BE_API_URL}/event/${formData.get('id')}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          //_Id: formData.get('id'),
+          title: formData.get('title'),
+          description: formData.get('description'),
+          location: formData.get('location'),
+          startAt: formData.get('startAt'),
+          endAt: formData.get('endAt'),
+        }),
+      },
+    );
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      console.log(error.issues);
+    }
+    console.log(error);
+    console.error('fail to update event');
+  }
+  redirect('/home');
 }

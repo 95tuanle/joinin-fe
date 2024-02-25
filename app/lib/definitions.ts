@@ -91,12 +91,14 @@ export interface Event {
 
 // Antony
 export interface AntonyEvent {
-  _id: String;
-  title: String;
-  description: String;
-  location: String;
-  startAt: Date;
-  endAt: Date;
-  organizer: String;
+  _id: string;
+  title: string;
+  description: string;
+  location: string;
+  startAt: number;
+  endAt: number;
+  organizer: string;
+  isValid: boolean;
   participants: Array<String>;
+  __v: number;
 }

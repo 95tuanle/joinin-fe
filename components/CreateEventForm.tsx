@@ -1,6 +1,22 @@
+'use client';
+
 import { createEvent } from '@/app/lib/event-action';
+import React, { useState } from 'react';
 
 export default function CreateEventForm() {
+  const [startDate, setStartDate] = useState<string>(() =>
+    new Date().toLocaleString(),
+  );
+  const [endDate, setEndDate] = useState<string>('');
+
+  const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setStartDate(e.target.value);
+  };
+
+  const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEndDate(e.target.value);
+  };
+
   return (
     <form action={createEvent} className="max-w-sm mx-auto">
       <div className="mb-5">
@@ -11,7 +27,7 @@ export default function CreateEventForm() {
           required
           type="text"
           name="title"
-          className="block w-full p-4 border rounded-lg text-base bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+          className="block w-full p-4 border rounded-lg text-base bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
       <div className="mb-5">
@@ -21,7 +37,7 @@ export default function CreateEventForm() {
         <textarea
           required
           name="description"
-          className="block w-full p-4 border rounded-lg text-base bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+          className="block w-full p-4 border rounded-lg text-base bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
       <div className="mb-5">
@@ -32,7 +48,7 @@ export default function CreateEventForm() {
           required
           type="text"
           name="location"
-          className="block w-full p-4 border rounded-lg text-base bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+          className="block w-full p-4 border rounded-lg text-base bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
       <div className="mb-5">
@@ -43,7 +59,10 @@ export default function CreateEventForm() {
           required
           type="datetime-local"
           name="startAt"
-          className="block w-full p-4 border rounded-lg text-base bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+          value={startDate}
+          onChange={handleStartDateChange}
+          min={startDate}
+          className="block w-full p-4 border rounded-lg text-base bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
       <div className="mb-5">
@@ -54,7 +73,10 @@ export default function CreateEventForm() {
           required
           type="datetime-local"
           name="endAt"
-          className="block w-full p-4 border rounded-lg text-base bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+          value={endDate}
+          onChange={handleEndDateChange}
+          min={startDate}
+          className="block w-full p-4 border rounded-lg text-base bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
       <button
