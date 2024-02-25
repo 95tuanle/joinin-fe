@@ -1,6 +1,5 @@
 import React from 'react';
 import NavBar from '@/app/ui/nav-bar';
-import AppBar from '@/components/AppBar';
 import { auth } from '@/auth';
 import { CustomSession } from '@/app/lib/definitions';
 
@@ -21,7 +20,6 @@ export default async function Layout({
 
   return (
     <>
-      <AppBar />
       <NavBar links={links} firstName={session.firstName} />
       {children}
     </>
