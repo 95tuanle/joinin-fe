@@ -1,11 +1,9 @@
-import { auth } from '@/auth';
-import { CustomSession, Event } from '@/app/lib/definitions';
+import { AntonyEvent } from '@/app/lib/definitions';
 import { getMyEvent } from '@/app/lib/event-action';
 import EventCard from '@/components/EventCard';
 
 export default async function Page() {
-  const session = (await auth()) as CustomSession;
-  const events: Array<Event> | { message: string } = await getMyEvent();
+  const events: Array<AntonyEvent> | { message: string } = await getMyEvent();
   let contents;
   if (typeof events === 'object' && 'message' in events) {
     contents = <div> {events.message} </div>;

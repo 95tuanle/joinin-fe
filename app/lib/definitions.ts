@@ -54,7 +54,6 @@ export type UserSignInState =
   | string
   | undefined;
 
-// export type Event = {
 export type CreateEventState =
   | {
       errors?: {
