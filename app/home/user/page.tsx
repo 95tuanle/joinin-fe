@@ -1,5 +1,5 @@
 import { auth } from '@/auth';
-import { CustomSession, Event } from '@/app/lib/definitions';
+import { CustomSession } from '@/app/lib/definitions';
 import { handleSignOut } from '@/app/lib/actions';
 
 export default async function Page() {

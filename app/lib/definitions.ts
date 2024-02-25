@@ -84,9 +84,9 @@ export interface Event {
   location: string;
   startAt: number;
   endAt: number;
-//   organizer: string;
-//   participants: Array<string>;
-// };
+  //   organizer: string;
+  //   participants: Array<string>;
+  // };
   organizer: User;
   isValid: boolean;
   participants: Array<User>;

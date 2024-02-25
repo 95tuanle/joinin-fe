@@ -27,7 +27,7 @@
 //         {contents}
 //       </div>
 //     </main>
-    
+
 import { Suspense } from 'react';
 import { Loading } from '@/app/ui/loading';
 import UpcomingEvents from '@/app/ui/home/upcoming-events';

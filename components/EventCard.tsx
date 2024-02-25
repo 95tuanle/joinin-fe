@@ -1,8 +1,7 @@
-import { Event } from '@/app/lib/definitions';
+import { CustomSession, Event } from '@/app/lib/definitions';
 import ActionButton from '@/components/ActionButton';
-import { CustomSession } from '@/app/lib/definitions';
 import { auth } from '@/auth';
-import { CiCalendar, CiLocationOn } from 'react-icons/ci';
+import { CiCalendar } from 'react-icons/ci';
 
 interface IProps {
   event: Event;

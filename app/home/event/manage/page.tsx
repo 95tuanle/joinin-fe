@@ -1,7 +1,6 @@
 import { auth } from '@/auth';
 import { CustomSession, Event } from '@/app/lib/definitions';
 import { getMyEvent } from '@/app/lib/event-action';
-import Link from 'next/link';
 import EventCard from '@/components/EventCard';
 
 export default async function Page() {

@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import {
-  FaHouse,
-  FaPlus,
-  FaPen,
   FaCircleUser,
   FaHandFist,
+  FaHouse,
+  FaPen,
+  FaPlus,
 } from 'react-icons/fa6';
 
 export default function AppBar() {

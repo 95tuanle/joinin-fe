@@ -1,6 +1,6 @@
 import { auth } from '@/auth';
 import { CustomSession, Event } from '@/app/lib/definitions';
-import { getJoinedEvent, getMyEvent } from '@/app/lib/event-action';
+import { getJoinedEvent } from '@/app/lib/event-action';
 import EventCard from '@/components/EventCard';
 
 export default async function Page() {

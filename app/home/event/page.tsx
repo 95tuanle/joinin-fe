@@ -1,8 +1,6 @@
 import { auth } from '@/auth';
-import { CiCalendar, CiLocationOn } from 'react-icons/ci';
 import { AntonyEvent, CustomSession } from '@/app/lib/definitions';
 import { getAllEvent } from '@/app/lib/event-action';
-import Link from 'next/link';
 import EventCard from '@/components/EventCard';
 
 export default async function Page() {
