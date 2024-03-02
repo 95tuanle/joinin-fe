@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import { Loading } from '@/app/ui/loading';
 import JoinedEvents from '@/app/ui/home/joined-events';
 
-export default async function Page() {
+export default function Page() {
   return (
     <div className="w-full">
       <div className="flex w-full items-center justify-between">

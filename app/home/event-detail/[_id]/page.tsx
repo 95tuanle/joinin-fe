@@ -2,11 +2,7 @@ import { Suspense } from 'react';
 import { Loading } from '@/app/ui/loading';
 import EventDetail from '@/app/ui/home/event-detail';
 
-export default async function Page({
-  params: { _id },
-}: {
-  params: { _id: string };
-}) {
+export default function Page({ params: { _id } }: { params: { _id: string } }) {
   return (
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
