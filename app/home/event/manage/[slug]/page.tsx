@@ -2,12 +2,21 @@ import UpdateEventForm from '@/components/UpdateEventForm';
 import { getEventDetail } from '@/app/lib/event-action';
 import { Event } from '@/app/lib/definitions';
 
-export default async function Page({ params }: { params: { slug: string } }) {
-  const event: Event = await getEventDetail(params.slug);
+type PageProps = {
+  params: Promise<{
+    slug: string;
+  }>;
+};
+
+export default async function Page({ params }: PageProps) {
+  const { slug } = await params;
+
+  const event: Event = await getEventDetail(slug);
 
   return (
     <div className="h-screen flex flex-col items-center justify-center space-y-10">
       <h1 className="text-3xl">Modify Event</h1>
+
       <UpdateEventForm
         id={event._id}
         title={event.title}
